@@ -2,7 +2,6 @@ import uuid
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from db import items
 from schemas import ItemSchema, ItemUpdateSchema
 blp = Blueprint ("items", __name__, description="Operations on stores")
 
@@ -21,6 +20,7 @@ class Item(MethodView):
             return {"mesasge": "item deleted."}
         except KeyError:
             abort(404, "item not found.")
+            
     @blp.arguments(ItemUpdateSchema)
     @blp.response(200, ItemSchema)
     def put(self, item_data, item_id):
