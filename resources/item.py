@@ -17,13 +17,15 @@ class Item(MethodView):
         return item
     
     def delete(self, item_id):
-       item = ItemModel.query.get_or_404(item_id)
-       raise NotImplementedError("Deleting is not implemented")
+        item = ItemModel.query.get_or_404(item_id)
+        db.session.delete(item)
+        db.session.commit()
+        return{"message": "Item deleted"}, 200
             
     @blp.arguments(ItemUpdateSchema)
     @blp.response(200, ItemSchema)
     def put(self, item_data, item_id):
-        item = ItemModel.query.get(**item_data)
+        item = ItemModel.query.get(item_id)
         if item:
             item.price = item_data['price']
             item.name = item_data['name']
@@ -33,11 +35,13 @@ class Item(MethodView):
         db.session.add(item)
         db.session.commit()
 
+        return item
+
 @blp.route("/item")
 class ItemList(MethodView):
     @blp.response(200, ItemSchema(many=True))
     def get(self):
-        item = ItemModel.query
+        return ItemModel.query.all()
     
     # no need for request.get_json with schma 
     # the decorator now validates the request and then injects it in to the method 
