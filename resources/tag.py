@@ -29,7 +29,7 @@ class TagsInStore(MethodView):
             abort(500, messeage=str(e))
         return tag
 
-@blp.route("Item/<string:item_id>/tag/<string:tag_id>")
+@blp.route("/item/<string:item_id>/tag/<string:tag_id>")
 class LInkTagsToItem(MethodView):
     blp.response(201, TagSchema)
     def post(self, item_id, tag_id):
@@ -73,7 +73,7 @@ class Tag(MethodView):
     )
     @blp.alt_response(404, description="Tag not found")
     @blp.response(400, description="returned if the tag is assigned to one or more items. in this case the tag is not deleted")
-    def delete(self, tag_id)
+    def delete(self, tag_id):
         tag = TagModel.query.get_or_404(tag_id)
 
         if not tag.items:
