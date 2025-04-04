@@ -12,6 +12,8 @@ from flask_smorest import Api
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 from resources.tag import blp as TagBlueprint
+from flask_jwt_extended import JWTManager
+
 import os
 def create_app(db_url=None):
     app = Flask(__name__)
@@ -27,7 +29,9 @@ def create_app(db_url=None):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
     api = Api(app)
-
+    # Made with secrets.SystemRandom().getrandbits(128) in the console. 
+    # Typically stored in an env variable, not the code. will work on this in the future. 
+    app.config["JWT_SECRET_KEY"] = "300341454825717116459708229430908657497"
     with app.app_context():
      db.create_all()
 
