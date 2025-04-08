@@ -7,7 +7,7 @@
 
 from db import db
 import models
-from flask import Flask, request
+from flask import Flask, jsonify
 from flask_smorest import Api
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
@@ -33,6 +33,26 @@ def create_app(db_url=None):
     # Made with secrets.SystemRandom().getrandbits(128) in the console. 
     # Typically stored in an env variable, not the code. will work on this in the future. 
     app.config["JWT_SECRET_KEY"] = "300341454825717116459708229430908657497"
+    jwt = JWTManager(app)
+
+    @jwt.expired_token_loader
+    def experied_token_callback(jwt_header, jwt_payload):
+       return (
+          jsonify({"message": "the token has expired.", "error": "token_expired"}), 401
+       )
+    
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+       return{
+            jsonify({"message": "signature verification failed", "error": "invalid_token"}), 
+            401
+       }
+
+    @jwt.unauthorized_loader
+    def missing_token_callback(error):
+       return(
+          jsonify({'description': "Request does not contain an access token", "error": "authorization_required"}), 401
+       )
     with app.app_context():
      db.create_all()
 
