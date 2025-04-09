@@ -1,0 +1,37 @@
+File containing my notes during the course 
+
+link to course e-book 
+https://rest-apis-flask.teclado.com/
+
+JWT Notes 
+what is JWT? 
+JWT is a signed json object. Login systems will sign the JWT proving that the flask app generated 
+the object 
+
+This is how we make sure certain endpoints require a login. We make sure the endpoints also get a 
+signed JWT object as proof that the user has logged in. 
+
+The flow of this task is 
+Get username and password from user -> put data in to api request -> 
+api recieves username and password -> api validates the username and password -> 
+api generates access token -> user stores access token (Local storage or cookies)
+
+Flask needs a JWT_SECRET_KEY 
+normally done by app.config['JWT_SECRET_KEY'] = str(secrets.SystemRandom().randbits(128))
+
+The access token is created with the create_access_token(identity=str(user.id))
+This is returned from the api to the client
+
+Protecting Endpoints:
+
+To protect endpoints, we ad @jwt_required. imported from the flask_jwt_extended library. 
+This is put before api's we want to keep from someone accessing without logging in. 
+
+we can add extra information, called claims to the access token, like if the user is an admin. 
+we do this with @jwt.cadditional_claims_loader. and then add things to the body
+{is_admin": True} or {"is_admin": False}  or so on. 
+
+we can then check those claims in later endpoints. 
+jwt = get_jwt()
+if not jwt.get("is_admin")
+    abort(401, message="Admin priviledge required.")
