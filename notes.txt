@@ -35,3 +35,8 @@ we can then check those claims in later endpoints.
 jwt = get_jwt()
 if not jwt.get("is_admin")
     abort(401, message="Admin priviledge required.")
+
+
+4/14: 
+couse was on how to use Insomnia for testing. 
+Nothing to push 
