@@ -14,6 +14,7 @@ from resources.store import blp as StoreBlueprint
 from resources.tag import blp as TagBlueprint
 from resources.user import blp as UserBlueprint
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
 from blocklist import BLOCKLIST
 
@@ -37,7 +38,7 @@ def create_app(db_url=None):
    app.config["JWT_SECRET_KEY"] = "300341454825717116459708229430908657497"
    jwt = JWTManager(app)
 
-
+   migrate = Migrate(app, db)
 
 
 

@@ -40,3 +40,9 @@ if not jwt.get("is_admin")
 4/14: 
 couse was on how to use Insomnia for testing. 
 Nothing to push 
+
+
+4/18 
+to migrate run "flask db init" in command line 
+will create migrations folder that stores all changes to db 
+most important folder is versions which keeps track of what was changed
